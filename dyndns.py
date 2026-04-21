@@ -86,10 +86,13 @@ def request_patch(endpoint, token, data):
 if __name__ == "__main__":
     # Get IPv4 address.
     try:
-        ipv4 = requests.get("https://v4.ipv6-test.com/api/myip.php", timeout=10.).text
+        ipv4 = requests.get("https://v4.ident.me/", timeout=10.).text
     except:
-        print_message("WARNING: Unable to determine current IPv4 address.")
-        ipv4 = False
+        try:
+            ipv4 = requests.get("https://api4.ipify.org", timeout=10.).text
+        except:
+            print_message("WARNING: Unable to determine current IPv4 address.")
+            ipv4 = False
     else:
         if not IPV4_REGEX.match(ipv4):
             print_message("WARNING: Invalid IPv4 address obtained: '%s'" % ipv4)
@@ -100,9 +103,12 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         if sys.argv[1] == "online":
             try:
-                ipv6 = requests.get("https://v6.ipv6-test.com/api/myip.php", timeout=10.).text
+                ipv6 = requests.get("https://v6.ident.me/", timeout=10.).text
             except:
-                print_message("WARNING: Unable to determine current IPv6 address.")
+                try:
+                    ipv6 = requests.get("https://api6.ipify.org", timeout=10.).text
+                except:
+                    print_message("WARNING: Unable to determine current IPv6 address.")
         else:
             ipv6 = sys.argv[1]
         if ipv6 and not IPV6_REGEX.match(ipv6):
